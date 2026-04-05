@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      workflows: write  
     
     steps:
       - name: Checkout GitHub repository
@@ -21,25 +22,17 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 添加 Codeberg 作为远程仓库
           git remote add codeberg https://codeberg.org/yumou/huh114514.github.io.git
-          
-          # 拉取 Codeberg 的 main 分支
           git fetch codeberg main
-          
-          # 合并（允许无关历史）
           git merge codeberg/main --allow-unrelated-histories --no-edit || true
           
-          # 如果有冲突，强制使用 Codeberg 的版本
-          if git diff --cached --quiet; then
-            echo "No conflicts"
-          else
-            echo "Conflicts detected, resolving by preferring Codeberg version"
+          if ! git diff --cached --quiet; then
             git checkout --theirs .
             git add .
-            git commit -m "Auto-resolve: use Codeberg version"
+            git commit -m "Auto-resolve: prefer Codeberg"
           fi
+      
       - name: Push to GitHub
         run: |
-          git pull origin main --rebase
+          git pull origin main --rebase || true
           git push origin main
