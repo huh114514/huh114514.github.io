@@ -1,0 +1,12 @@
+name: Initial Overwrite from Codeberg
+on: workflow_dispatch
+
+jobs:
+  overwrite:
+    runs-on: ubuntu-latest
+    permissions: contents: write
+    steps:
+      - run: |
+          git clone --mirror https://codeberg.org/yumou/huh114514.github.io.git temp
+          cd temp
+          git push --mirror --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/yumou/huh114514.github.io.git
