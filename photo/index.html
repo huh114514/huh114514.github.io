@@ -94,7 +94,7 @@
                 // 图片：点击直接下载
                 return `
                     <div class="card" onclick="downloadImage('${item.imgUrl}', '${item.fileName || getFileNameFromUrl(item.imgUrl)}')">
-                        <img class="media-preview" src="${item.imgUrl}" alt="${item.title || '图片'}" loading="lazy">
+                        <img class="media-preview" src="${item.imgUrl}" alt="${item.title || '图片'}">
                     </div>
                 `;
             } else if (item.type === 'video') {
